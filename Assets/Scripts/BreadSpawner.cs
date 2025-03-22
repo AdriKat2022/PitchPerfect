@@ -65,7 +65,7 @@ public class BreadSpawner : MonoBehaviour
         else
         {
             _isPlaying = false;
-            // TODO: Win animation!
+            // TODO: End animation
         }
     }
 

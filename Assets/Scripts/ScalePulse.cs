@@ -52,6 +52,10 @@ public class ScalePulse : MonoBehaviour
         if (_pulseOnBeat)
         {
             RhythmCore.OnBeat += Pulse;
+            if (_matchPulseDurationToBeat)
+            {
+                RhythmCore.OnTempoChange += OnTempoChange;
+            }
         }
     }
 
@@ -60,6 +64,10 @@ public class ScalePulse : MonoBehaviour
         if (_pulseOnBeat)
         {
             RhythmCore.OnBeat -= Pulse;
+            if (_matchPulseDurationToBeat)
+            {
+                RhythmCore.OnTempoChange -= OnTempoChange;
+            }
         }
     }
 
@@ -115,5 +123,14 @@ public class ScalePulse : MonoBehaviour
         }
 
         _isPulsing = false;
+    }
+
+    private void OnTempoChange(float tempo)
+    {
+        if (_matchPulseDurationToBeat)
+        {
+            Debug.Log("Pulse duration changed to match beat interval" + _pulseDuration);
+            _pulseDuration = 1 / tempo;
+        }
     }
 }

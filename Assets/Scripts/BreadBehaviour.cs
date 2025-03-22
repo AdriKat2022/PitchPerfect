@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class BreadBehaviour : MonoBehaviour
 {
+    [SerializeField] private ScoreTextNotification _scoreTextNotification;
     [SerializeField] private BreadType _breadType;
     [SerializeField] private float _height; // How much the bread will go up when flipped (purely cosmetic).
     [Range(1, 4)]
@@ -54,17 +55,19 @@ public class BreadBehaviour : MonoBehaviour
         }
     }
 
-    // In new state, the bread will be falling straight.
-    // In flipped and ready state, the bread will taking quadratic curves.
-    // In Kicked state, a special animation will play.
-    // In Missed state, the bread will fall keeping its last curve (either straight or quadratic curve).
-
     public void Flip(RewardType rewardType)
     {
         if (_currentFlip < _requiredFlips)
         {
+            _scoreTextNotification.MakeNotification(rewardType);
+
             transform.position = _points[_currentFlip];
-            PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, _points[_currentFlip], _points[_currentFlip + 1], GetMidPointWithHeight(_points[_currentFlip], _points[_currentFlip + 1]), Speed);
+
+            // Adujst the speed based on the signed beat distance from the rhythm
+            float beatDistance = RhythmCore.GetBeatDistance();
+            float speedMultiplier = Mathf.Clamp(1 + beatDistance, 0.5f, 1.5f);
+
+            PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, _points[_currentFlip], _points[_currentFlip + 1], GetMidPointWithHeight(_points[_currentFlip], _points[_currentFlip + 1]), Speed * speedMultiplier);
             _currentFlip++;
         }
         else
@@ -90,7 +93,6 @@ public class BreadBehaviour : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // If the bread is not initialized, do nothing.
         if (!_intialized)
         {
             return;
@@ -102,7 +104,10 @@ public class BreadBehaviour : MonoBehaviour
             _rhythmAction.UnregisterBread(this);
 
             // TODO: Miss animation
-            Destroy(gameObject);
+            _scoreTextNotification.MakeNotification(RewardType.None);
+            // Stop the bread from moving.
+            _rigidbody.linearVelocityY = 0;
+            _rigidbody.gravityScale = 0;
         }
     }
 

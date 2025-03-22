@@ -452,7 +452,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _activateOnAwake: 1
-  _globalSpeed: 1
+  _globalSpeed: 1.25
+  _useBpm: 1
+  _bpm: 75
 --- !u!4 &603775165
 Transform:
   m_ObjectHideFlags: 0
@@ -716,7 +718,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  m_Sprite: {fileID: 1438537466554494346, guid: 000dee9e818a6924e9f528f730be66f8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -777,7 +779,16 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.050887592
     - serializedVersion: 3
-      time: 0.24750829
+      time: 0.23513381
+      value: -0.005096483
+      inSlope: -0.23292592
+      outSlope: -0.23292592
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.29955703
       value: 0
       inSlope: -0.00071409723
       outSlope: -0.00071409723
@@ -814,7 +825,7 @@ GameObject:
   - component: {fileID: 1098030655}
   - component: {fileID: 1098030654}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Pitch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -829,15 +840,15 @@ RectTransform:
   m_GameObject: {fileID: 1098030652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.35, y: 0.35, z: 0.35}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 711622841}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: -100}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -261, y: -165}
+  m_SizeDelta: {x: 1127, y: 589}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1098030654
 MonoBehaviour:
@@ -859,7 +870,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
+  m_Sprite: {fileID: 6362663692451344482, guid: 93d729f8a8e0adb44889c8111cbd62ee, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -912,7 +923,16 @@ MonoBehaviour:
       inWeight: 0.33333334
       outWeight: 0.050887592
     - serializedVersion: 3
-      time: 0.24750829
+      time: 0.23513381
+      value: -0.005096483
+      inSlope: -0.23292592
+      outSlope: -0.23292592
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.29955703
       value: 0
       inSlope: -0.00071409723
       outSlope: -0.00071409723
@@ -1101,10 +1121,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebaab3828f9ccb348a563bc17e66e42b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _toleranceExcellent: 0.05
-  _toleranceGreat: 0.1
-  _toleranceGood: 0.2
-  _toleranceOk: 0.3
+  _toleranceExcellent: 0.03
+  _toleranceGreat: 0.06
+  _toleranceGood: 0.1
+  _toleranceOk: 0.2
   _oven: {fileID: 1003916812}
   _flipKickAction: {fileID: -4872647168849920244, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
 --- !u!1660057539 &9223372036854775807
