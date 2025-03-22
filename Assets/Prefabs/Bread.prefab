@@ -49,6 +49,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c67a9ad527b9224b8b5b6ff07ff6b25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spriteRenderer: {fileID: 7778424794281019309}
+  _kickSpeed: 10
   _scoreTextNotification: {fileID: 982284607200928659}
   _breadType: 0
   _height: 1
@@ -115,7 +117,7 @@ CapsuleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Size: {x: 4, y: 2}
+  m_Size: {x: 2, y: 0.8}
   m_Direction: 1
 --- !u!114 &6412331156410865595
 MonoBehaviour:

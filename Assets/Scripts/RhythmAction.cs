@@ -11,12 +11,12 @@ public class RhythmAction : MonoBehaviour
     [SerializeField] private float _toleranceOk = 0.8f;
 
     [Header("Settings")]
-    [SerializeField] private GameObject _oven;
+    [SerializeField] private OvenBehaviour _oven;
     [SerializeField] private InputActionReference _flipKickAction;
 
     private readonly List<BreadBehaviour> _breads = new();
 
-    public GameObject Oven => _oven;
+    public OvenBehaviour Oven => _oven;
 
     public void RegisterBread(BreadBehaviour bread)
     {
@@ -33,12 +33,14 @@ public class RhythmAction : MonoBehaviour
     {
         _flipKickAction.action.Enable();
         _flipKickAction.action.performed += FlipKick;
+        _flipKickAction.action.canceled += FlipKick;
     }
 
     private void OnDisable()
     {
         _flipKickAction.action.Disable();
         _flipKickAction.action.performed -= FlipKick;
+        _flipKickAction.action.canceled -= FlipKick;
     }
     #endregion
 

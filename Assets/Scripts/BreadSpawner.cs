@@ -73,7 +73,7 @@ public class BreadSpawner : MonoBehaviour
     {
         Vector3 spawnPosition = transform.position + Vector3.up * UnityEngine.Random.Range(-_spawnXRadius, _spawnXRadius);
         BreadBehaviour bread = Instantiate(_breadPrefab, spawnPosition, Quaternion.identity);
-        bread.Initialize(_rhythmActionLine, spawnPosition, _rhythmActionLine.Oven.transform.position.x, _rhythmActionLine.transform.position.y, speed / RhythmCore.Instance.BeatInterval, heightMult);
+        bread.Initialize(_rhythmActionLine, spawnPosition, _rhythmActionLine.Oven, _rhythmActionLine.transform.position.y, speed / RhythmCore.Instance.BeatInterval, heightMult);
         _rhythmActionLine.RegisterBread(bread);
     }
 }

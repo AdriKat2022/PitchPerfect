@@ -1,8 +1,11 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class BreadBehaviour : MonoBehaviour
 {
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private float _kickSpeed = 20f;
     [SerializeField] private ScoreTextNotification _scoreTextNotification;
     [SerializeField] private BreadType _breadType;
     [SerializeField] private float _height; // How much the bread will go up when flipped (purely cosmetic).
@@ -15,26 +18,26 @@ public class BreadBehaviour : MonoBehaviour
     private bool _intialized = false;
     private int _currentFlip = 0;
     private float _originalXPosition;
-    private float _ovenXPosition;
     private float _lineYPosition;
+    private OvenBehaviour _oven;
     private RhythmAction _rhythmAction;
-    private Vector2[] _points;
     private Rigidbody2D _rigidbody;
+    private Vector2[] _points;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    public void Initialize(RhythmAction rhythmAction, Vector2 startPos, float ovenXPos, float lineYPos, float speed = 1f, float heightMult = 1f)
+    public void Initialize(RhythmAction rhythmAction, Vector2 startPos, OvenBehaviour oven, float lineYPos, float speed = 1f, float heightMult = 1f)
     {
         _rhythmAction = rhythmAction;
         transform.position = startPos;
         _originalXPosition = startPos.x;
-        _ovenXPosition = ovenXPos;
         _height *= heightMult;
         Speed = speed;
         _lineYPosition = lineYPos;
+        _oven = oven;
         _intialized = true;
 
         InitializePoints();
@@ -47,10 +50,10 @@ public class BreadBehaviour : MonoBehaviour
         // Initialize the points for the quadratic curves according to the required flips.
         _points = new Vector2[_requiredFlips + 1];
         _points[0] = new(_originalXPosition, _lineYPosition);
-        _points[^1] = new(_ovenXPosition, _lineYPosition);
+        _points[^1] = new(_oven.transform.position.x, _lineYPosition);
         for (int i = 1; i < _requiredFlips; i++)
         {
-            float x = _originalXPosition + ((_ovenXPosition - _originalXPosition) / _requiredFlips) * i;
+            float x = _originalXPosition + ((_oven.transform.position.x - _originalXPosition) / _requiredFlips) * i;
             _points[i] = new(x, _lineYPosition);
         }
     }
@@ -70,25 +73,36 @@ public class BreadBehaviour : MonoBehaviour
             PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, _points[_currentFlip], _points[_currentFlip + 1], GetMidPointWithHeight(_points[_currentFlip], _points[_currentFlip + 1]), Speed * speedMultiplier);
             _currentFlip++;
         }
-        else
-        {
-            // If the bread is already flipped the required number of times, it should have been kicked.
-        }
-    }
-
-    private Vector2 GetMidPointWithHeight(Vector2 vector21, Vector2 vector22)
-    {
-        return new Vector2((vector21.x + vector22.x) / 2, _height);
     }
 
     public void Kick(float force, RewardType rewardType)
     {
         // TODO: Camera shake
-        // TODO: if required flips are not reached ignore it.
 
         if (_currentFlip < _requiredFlips) return;
 
-        // TODO: quick reward animation
+        Debug.Log("test");
+
+        StartCoroutine(KickCoroutine(force, rewardType));
+    }
+
+    private IEnumerator KickCoroutine(float force, RewardType rewardType)
+    {
+        _rhythmAction.UnregisterBread(this);
+        _scoreTextNotification.MakeNotification(rewardType);
+
+        // Stop the bread from moving.
+        _rigidbody.gravityScale = 0;
+        _rigidbody.linearVelocity = Vector2.up * (_kickSpeed * (1 + force));
+
+        // Wait for the bread to reach the oven.
+        yield return new WaitUntil(() => transform.position.y >= _oven.transform.position.y);
+
+        _rigidbody.linearVelocity = Vector2.zero;
+
+        _spriteRenderer.enabled = false;
+        _oven.Cook();
+
     }
 
     private void FixedUpdate()
@@ -127,4 +141,10 @@ public class BreadBehaviour : MonoBehaviour
         Missed
     }
 
+    #region Helper Methods
+    private Vector2 GetMidPointWithHeight(Vector2 vector21, Vector2 vector22)
+    {
+        return new Vector2((vector21.x + vector22.x) / 2, _height);
+    }
+    #endregion
 }
