@@ -588,9 +588,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _activateOnAwake: 1
-  _globalSpeed: 1.25
+  _globalSpeed: 1.5333333
   _useBpm: 1
-  _bpm: 75
+  _bpm: 92
 --- !u!4 &603775165
 Transform:
   m_ObjectHideFlags: 0
@@ -1527,21 +1527,66 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _breadWave:
-  - Flips: 1
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 1
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 0
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 0
+  - Flips: 2
+    Speed: 1
+    Height: 1
+    BeatOffset: 0
+    NextBeatDelay: 1
+  - Flips: 2
     Speed: 1
     Height: 2
     BeatOffset: 0
     NextBeatDelay: 2
-  - Flips: 1
+  - Flips: 2
     Speed: 1
     Height: 2
     BeatOffset: 0
     NextBeatDelay: 2
-  - Flips: 1
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 1
+  - Flips: 2
     Speed: 1
     Height: 2
     BeatOffset: 0
     NextBeatDelay: 2
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 1
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 2
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 1
+  - Flips: 2
+    Speed: 1
+    Height: 2
+    BeatOffset: 0
+    NextBeatDelay: 1
   _rhythmActionLine: {fileID: 2069996780}
   _breadPrefab: {fileID: 7354481603543163532, guid: 7901738c940326f4daa4eea321f9d8cf, type: 3}
   _spawnInterval: 1

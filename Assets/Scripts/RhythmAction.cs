@@ -67,8 +67,8 @@ public class RhythmAction : MonoBehaviour
                 RewardType rewardType = ComputeRewardType(_breads[i]);
                 if (rewardType != RewardType.None)
                 {
-                    _breads[i].Kick((float)context.duration, rewardType);
                     Debug.Log("KICK bread: " + rewardType);
+                    _breads[i].Kick((float)context.duration, rewardType);
                 }
             }
         }

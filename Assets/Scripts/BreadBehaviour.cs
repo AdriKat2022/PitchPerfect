@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -8,13 +7,15 @@ public class BreadBehaviour : MonoBehaviour
     [SerializeField] private float _kickSpeed = 20f;
     [SerializeField] private ScoreTextNotification _scoreTextNotification;
     [SerializeField] private BreadType _breadType;
-    [SerializeField] private float _height; // How much the bread will go up when flipped (purely cosmetic).
-    [Range(1, 4)]
-    [SerializeField] private int _requiredFlips = 1;
+    [SerializeField] private float _baseHeight; // How much the bread will go up when flipped (purely cosmetic).
+
+
+    private int _requiredFlips = 1;
 
     // The speed of the bread of step per seconds (if 2, the bread will take 0.5s to make it accross the straight or curve path).
     public float Speed { get; set; } = 1f;
 
+    private bool _missed = false;
     private bool _intialized = false;
     private int _currentFlip = 0;
     private float _originalXPosition;
@@ -29,20 +30,21 @@ public class BreadBehaviour : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    public void Initialize(RhythmAction rhythmAction, Vector2 startPos, OvenBehaviour oven, float lineYPos, float speed = 1f, float heightMult = 1f)
+    public void Initialize(RhythmAction rhythmAction, Vector2 startPos, OvenBehaviour oven, float lineYPos, BreadData breadData)
     {
         _rhythmAction = rhythmAction;
         transform.position = startPos;
         _originalXPosition = startPos.x;
-        _height *= heightMult;
-        Speed = speed;
         _lineYPosition = lineYPos;
+        _baseHeight *= breadData.Height;
+        Speed = breadData.Speed;
+        _requiredFlips = breadData.Flips;
         _oven = oven;
         _intialized = true;
 
         InitializePoints();
 
-        PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, startPos, _points[0], startPos, Speed);
+        PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, startPos, _points[0], startPos, 1 / RhythmCore.Instance.BeatInterval);
     }
 
     private void InitializePoints()
@@ -62,6 +64,8 @@ public class BreadBehaviour : MonoBehaviour
     {
         if (_currentFlip < _requiredFlips)
         {
+            _rigidbody.AddTorque(800);
+
             _scoreTextNotification.MakeNotification(rewardType);
 
             transform.position = _points[_currentFlip];
@@ -70,7 +74,7 @@ public class BreadBehaviour : MonoBehaviour
             float beatDistance = RhythmCore.GetBeatDistance();
             float speedMultiplier = Mathf.Clamp(1 + beatDistance, 0.5f, 1.5f);
 
-            PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, _points[_currentFlip], _points[_currentFlip + 1], GetMidPointWithHeight(_points[_currentFlip], _points[_currentFlip + 1]), Speed * speedMultiplier);
+            PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, _points[_currentFlip], _points[_currentFlip + 1], GetMidPointWithHeight(_points[_currentFlip], _points[_currentFlip + 1]), 1 / RhythmCore.Instance.BeatInterval * Speed * speedMultiplier);
             _currentFlip++;
         }
     }
@@ -112,7 +116,7 @@ public class BreadBehaviour : MonoBehaviour
             return;
         }
 
-        if (transform.position.y < _rhythmAction.transform.position.y - 2)
+        if (transform.position.y < _rhythmAction.transform.position.y - 2 && !_missed)
         {
             // If the bread is missed, destroy it.
             _rhythmAction.UnregisterBread(this);
@@ -122,6 +126,8 @@ public class BreadBehaviour : MonoBehaviour
             // Stop the bread from moving.
             _rigidbody.linearVelocityY = 0;
             _rigidbody.gravityScale = 0;
+
+            _missed = true;
         }
     }
 
@@ -144,7 +150,7 @@ public class BreadBehaviour : MonoBehaviour
     #region Helper Methods
     private Vector2 GetMidPointWithHeight(Vector2 vector21, Vector2 vector22)
     {
-        return new Vector2((vector21.x + vector22.x) / 2, _height);
+        return new Vector2((vector21.x + vector22.x) / 2, _baseHeight);
     }
     #endregion
 }

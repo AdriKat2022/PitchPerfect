@@ -58,7 +58,7 @@ public class BreadSpawner : MonoBehaviour
 
         if (_currentBreadIndex < _breadWave.Length)
         {
-            SpawnBread(_breadWave[_currentBreadIndex].Speed, _breadWave[_currentBreadIndex].Height);
+            SpawnBread(_breadWave[_currentBreadIndex]);
             _delayCount = _breadWave[_currentBreadIndex].NextBeatDelay;
             _currentBreadIndex++;
         }
@@ -69,11 +69,11 @@ public class BreadSpawner : MonoBehaviour
         }
     }
 
-    public void SpawnBread(float speed, float heightMult)
+    public void SpawnBread(BreadData breadData)
     {
         Vector3 spawnPosition = transform.position + Vector3.up * UnityEngine.Random.Range(-_spawnXRadius, _spawnXRadius);
         BreadBehaviour bread = Instantiate(_breadPrefab, spawnPosition, Quaternion.identity);
-        bread.Initialize(_rhythmActionLine, spawnPosition, _rhythmActionLine.Oven, _rhythmActionLine.transform.position.y, speed / RhythmCore.Instance.BeatInterval, heightMult);
+        bread.Initialize(_rhythmActionLine, spawnPosition, _rhythmActionLine.Oven, _rhythmActionLine.transform.position.y, breadData);
         _rhythmActionLine.RegisterBread(bread);
     }
 }

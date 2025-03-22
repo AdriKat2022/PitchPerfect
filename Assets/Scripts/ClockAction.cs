@@ -6,8 +6,8 @@ public class ClockAction : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float _loopDuration = 1f;
     [SerializeField] private UnityEvent _loopAction;
+    [SerializeField] private bool _startOnAwake = true;
 
-    private bool _startOnAwake = true;
     private bool _isPlaying = false;
     private float _lastLoopTime;
 
