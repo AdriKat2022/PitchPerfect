@@ -1,16 +1,4 @@
-using System;
 using UnityEngine;
-
-[Serializable]
-public struct BreadData
-{
-    public int Flips;
-    public float Speed;
-    public float Height;
-    [Range(0f, 1f)]
-    public float BeatOffset;
-    public int NextBeatDelay;
-}
 
 public class BreadSpawner : MonoBehaviour
 {

@@ -21,6 +21,20 @@ public class RhythmCore : MonoBehaviour
     public float LastBeatTime => _lastBeatTime;
     public float BeatInterval => 1f / _globalSpeed;
 
+    #region Static Methods
+    public static void ChangeTempo(float newTempo)
+    {
+        Instance._globalSpeed = newTempo;
+        OnTempoChange?.Invoke(newTempo);
+    }
+
+    public static void ChangeTempoBpm(float newTempo)
+    {
+        Instance._bpm = newTempo;
+        Instance._globalSpeed = newTempo / 60f;
+        OnTempoChange?.Invoke(newTempo);
+    }
+
     public static float GetBeatDistance()
     {
         return Mathf.Min(Mathf.Abs(Instance.LastBeatTime - Time.time), Mathf.Abs(Instance.LastBeatTime + Instance.BeatInterval - Time.time));
@@ -45,6 +59,17 @@ public class RhythmCore : MonoBehaviour
         }
     }
 
+    public static void StartClock()
+    {
+        Instance.StartClocking();
+    }
+
+    public static void StopClock()
+    {
+        Instance.StopClocking();
+    }
+    #endregion
+
     private void OnValidate()
     {
         if (_useBpm)
@@ -63,23 +88,23 @@ public class RhythmCore : MonoBehaviour
         StartClock();
     }
 
-    public void StartClock()
+    public void StartClocking()
     {
         if (_isRunning) return;
 
         _isRunning = true;
 
-        StartCoroutine(Clock());
+        StartCoroutine(ClockCoroutine());
     }
 
-    public void StopClock()
+    public void StopClocking()
     {
         if (!_isRunning) return;
         _isRunning = false;
         StopAllCoroutines();
     }
 
-    private IEnumerator Clock()
+    private IEnumerator ClockCoroutine()
     {
         while (_isRunning)
         {

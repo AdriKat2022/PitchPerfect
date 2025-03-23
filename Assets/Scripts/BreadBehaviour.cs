@@ -25,6 +25,8 @@ public class BreadBehaviour : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private Vector2[] _points;
 
+    public bool IsGoingUp => _rigidbody.linearVelocityY > 0;
+
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
@@ -36,11 +38,13 @@ public class BreadBehaviour : MonoBehaviour
         transform.position = startPos;
         _originalXPosition = startPos.x;
         _lineYPosition = lineYPos;
-        _baseHeight *= breadData.Height;
-        Speed = breadData.Speed;
-        _requiredFlips = breadData.Flips;
+
         _oven = oven;
         _intialized = true;
+
+        _baseHeight *= breadData.Bread.Height;
+        Speed = breadData.Bread.Speed;
+        _requiredFlips = breadData.Bread.Flips;
 
         InitializePoints();
 
@@ -64,7 +68,7 @@ public class BreadBehaviour : MonoBehaviour
     {
         if (_currentFlip < _requiredFlips)
         {
-            _rigidbody.AddTorque(800);
+            StartCoroutine(TurnSprite(rewardType));
 
             _scoreTextNotification.MakeNotification(rewardType);
 
@@ -151,6 +155,16 @@ public class BreadBehaviour : MonoBehaviour
     private Vector2 GetMidPointWithHeight(Vector2 vector21, Vector2 vector22)
     {
         return new Vector2((vector21.x + vector22.x) / 2, _baseHeight);
+    }
+
+    private IEnumerator TurnSprite(RewardType rewardType)
+    {
+        // Rotate indefinitely
+        while (true)
+        {
+            _spriteRenderer.transform.Rotate(Vector3.forward, Speed / RhythmCore.Instance.BeatInterval);
+            yield return null;
+        }
     }
     #endregion
 }

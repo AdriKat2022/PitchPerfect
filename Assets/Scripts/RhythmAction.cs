@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 public class RhythmAction : MonoBehaviour
 {
     [Header("Tolerance")]
+    [SerializeField] private float _spacialDistanceMax = 1.2f;
+    [Space]
     [SerializeField] private float _toleranceExcellent = 0.2f;
     [SerializeField] private float _toleranceGreat = 0.4f;
     [SerializeField] private float _toleranceGood = 0.6f;
@@ -78,7 +80,9 @@ public class RhythmAction : MonoBehaviour
     {
         float distance = Mathf.Abs(breadBehaviour.transform.position.y - transform.position.y);
 
-        if (distance > 1f) return RewardType.None;
+        if (distance > _spacialDistanceMax) return RewardType.None;
+
+        if (breadBehaviour.IsGoingUp) return RewardType.None;
 
         float beatDistance = RhythmCore.GetBeatDistance();
 
