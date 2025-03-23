@@ -3,6 +3,7 @@ using UnityEngine;
 public class BreadSpawner : MonoBehaviour
 {
     [Header("Wave")]
+    [SerializeField] private bool _tutorialMode = false;
     [SerializeField] private BreadData[] _breadWave;
 
     [Header("Settings")]
