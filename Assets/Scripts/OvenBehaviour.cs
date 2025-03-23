@@ -18,7 +18,7 @@ public class OvenBehaviour : MonoBehaviour
         _audioSource = GetComponent<AudioSource>();
 
         _spriteRenderer.sprite = _openClosed;
-        yield return new WaitForSeconds(2f / 4f * RhythmCore.Instance.BeatInterval);
+        yield return new WaitForSeconds(2f / 4f * (float)RhythmCore.Instance.BeatInterval);
         _spriteRenderer.sprite = _openOven;
     }
 
@@ -35,7 +35,7 @@ public class OvenBehaviour : MonoBehaviour
     private IEnumerator CookCoroutine()
     {
         _spriteRenderer.sprite = _openClosedPitched;
-        yield return new WaitForSeconds(2f / 4f * RhythmCore.Instance.BeatInterval);
+        yield return new WaitForSeconds(2f / 4f * (float)RhythmCore.Instance.BeatInterval);
         _spriteRenderer.sprite = _openOven;
 
         _scoreManager.AddPitch();

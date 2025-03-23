@@ -84,7 +84,7 @@ public class RhythmAction : MonoBehaviour
 
         if (breadBehaviour.IsGoingUp) return RewardType.None;
 
-        float beatDistance = RhythmCore.GetBeatDistance();
+        double beatDistance = RhythmCore.GetBeatDistance();
 
         if (beatDistance < _toleranceExcellent)
         {

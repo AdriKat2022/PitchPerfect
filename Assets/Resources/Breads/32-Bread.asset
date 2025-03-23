@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: ShortBread
   <Flips>k__BackingField: 3
-  <Speed>k__BackingField: 1
+  <Speed>k__BackingField: 0.5
   <Height>k__BackingField: 1

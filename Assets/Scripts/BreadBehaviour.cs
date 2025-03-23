@@ -48,7 +48,7 @@ public class BreadBehaviour : MonoBehaviour
 
         InitializePoints();
 
-        PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, startPos, _points[0], startPos, 1 / RhythmCore.Instance.BeatInterval);
+        PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, startPos, _points[0], startPos, 1 / (float)RhythmCore.Instance.BeatInterval);
     }
 
     private void InitializePoints()
@@ -75,10 +75,10 @@ public class BreadBehaviour : MonoBehaviour
             transform.position = _points[_currentFlip];
 
             // Adujst the speed based on the signed beat distance from the rhythm
-            float beatDistance = RhythmCore.GetBeatDistance();
+            float beatDistance = (float)RhythmCore.GetBeatDistance();
             float speedMultiplier = Mathf.Clamp(1 + beatDistance, 0.5f, 1.5f);
 
-            PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, _points[_currentFlip], _points[_currentFlip + 1], GetMidPointWithHeight(_points[_currentFlip], _points[_currentFlip + 1]), 1 / RhythmCore.Instance.BeatInterval * Speed * speedMultiplier);
+            PhysicsHelper2D.LaunchRigidbody2D(_rigidbody, _points[_currentFlip], _points[_currentFlip + 1], GetMidPointWithHeight(_points[_currentFlip], _points[_currentFlip + 1]), 1 / (float)RhythmCore.Instance.BeatInterval * Speed * speedMultiplier);
             _currentFlip++;
         }
     }
@@ -162,7 +162,7 @@ public class BreadBehaviour : MonoBehaviour
         // Rotate indefinitely
         while (true)
         {
-            _spriteRenderer.transform.Rotate(Vector3.forward, Speed / RhythmCore.Instance.BeatInterval);
+            _spriteRenderer.transform.Rotate(Vector3.forward, Speed / (float)RhythmCore.Instance.BeatInterval);
             yield return null;
         }
     }

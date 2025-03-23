@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 
 public class RhythmCore : MonoBehaviour
@@ -10,16 +9,21 @@ public class RhythmCore : MonoBehaviour
     public static event Action OnBeat;
     public static event Action<float> OnTempoChange;
 
+    [SerializeField] private float _acceleration = 1f;
+    [SerializeField] private AudioSource _audioSource;
     [SerializeField] private bool _activateOnAwake;
     [SerializeField] private float _globalSpeed;
     [SerializeField] private bool _useBpm;
     [SerializeField] private float _bpm;
 
     private bool _isRunning = false;
-    private float _lastBeatTime;
+    private double _lastBeatTime;
+    private float _secondsPerBeat;
+    private float _songStartTime;
+    private int _lastBeat;
 
-    public float LastBeatTime => _lastBeatTime;
-    public float BeatInterval => 1f / _globalSpeed;
+    public double LastBeatTime => _lastBeatTime;
+    public double BeatInterval => 1f / (_globalSpeed * _acceleration);
 
     #region Static Methods
     public static void ChangeTempo(float newTempo)
@@ -35,19 +39,19 @@ public class RhythmCore : MonoBehaviour
         OnTempoChange?.Invoke(newTempo);
     }
 
-    public static float GetBeatDistance()
+    public static double GetBeatDistance()
     {
-        return Mathf.Min(Mathf.Abs(Instance.LastBeatTime - Time.time), Mathf.Abs(Instance.LastBeatTime + Instance.BeatInterval - Time.time));
+        return Mathf.Min(Mathf.Abs((float)(Instance.LastBeatTime - AudioSettings.dspTime)), Mathf.Abs((float)(Instance.LastBeatTime + Instance.BeatInterval - AudioSettings.dspTime)));
     }
 
-    public static float GetSignedBeatDistance()
+    public static double GetSignedBeatDistance()
     {
         // Return the distance to the nearest beat, with the sign indicating if the beat is in the past or in the future
 
         // Time since the last beat
-        float lateDistance = Time.time - Instance.LastBeatTime;
+        double lateDistance = AudioSettings.dspTime - Instance.LastBeatTime;
         // Time before the next beat
-        float earlyDistance = Instance.LastBeatTime + Instance.BeatInterval - Time.time;
+        double earlyDistance = Instance.LastBeatTime + Instance.BeatInterval - AudioSettings.dspTime;
 
         if (lateDistance < earlyDistance)
         {
@@ -64,9 +68,36 @@ public class RhythmCore : MonoBehaviour
         Instance.StartClocking();
     }
 
-    public static void StopClock()
+    public static void PauseClock()
     {
-        Instance.StopClocking();
+        Instance.PauseClocking();
+    }
+    #endregion
+
+    #region Control Methods
+    public void StartClocking()
+    {
+        if (_isRunning) return;
+
+        ComputeSongInfo();
+        _audioSource.Play();
+        _isRunning = true;
+    }
+
+    public void PauseClocking()
+    {
+        if (!_isRunning) return;
+
+        _isRunning = false;
+        _audioSource.Pause();
+    }
+
+    public void ResumeClocking()
+    {
+        if (_isRunning) return;
+
+        _isRunning = true;
+        _audioSource.Play();
     }
     #endregion
 
@@ -77,40 +108,49 @@ public class RhythmCore : MonoBehaviour
             _globalSpeed = _bpm / 60f;
         }
 
-        OnTempoChange?.Invoke(_globalSpeed);
+        _audioSource.pitch = _acceleration;
+
+        OnTempoChange?.Invoke(_globalSpeed * _acceleration);
+
+        ComputeSongInfo();
+    }
+
+    private void ComputeSongInfo()
+    {
+        _secondsPerBeat = 60f / _bpm / _acceleration;
+        _songStartTime = (float)AudioSettings.dspTime;
     }
 
     private void Awake()
     {
         Instance = this;
 
-        if (!_activateOnAwake) return;
-        StartClock();
+        if (_audioSource == null || _audioSource.clip == null)
+        {
+            Debug.LogError("Conductor: AudioSource or AudioClip is missing!");
+            return;
+        }
+
+        ComputeSongInfo();
+
+        if (_activateOnAwake)
+        {
+            StartClock();
+        }
     }
 
-    public void StartClocking()
-    {
-        if (_isRunning) return;
-
-        _isRunning = true;
-
-        StartCoroutine(ClockCoroutine());
-    }
-
-    public void StopClocking()
+    private void Update()
     {
         if (!_isRunning) return;
-        _isRunning = false;
-        StopAllCoroutines();
-    }
 
-    private IEnumerator ClockCoroutine()
-    {
-        while (_isRunning)
+        float songPosition = (float)(AudioSettings.dspTime - _songStartTime);
+        int currentBeat = Mathf.FloorToInt(songPosition / _secondsPerBeat);
+
+        if (currentBeat > _lastBeat)
         {
-            yield return new WaitForSeconds(1f / _globalSpeed);
+            _lastBeatTime = AudioSettings.dspTime;
+            _lastBeat = currentBeat;
             OnBeat?.Invoke();
-            _lastBeatTime = Time.time;
         }
     }
 }

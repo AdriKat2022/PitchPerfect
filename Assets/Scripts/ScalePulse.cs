@@ -12,7 +12,7 @@ public class ScalePulse : MonoBehaviour
     [Header("On Beat")]
     [SerializeField] private bool _pulseOnBeat = true;
     [SerializeField] private bool _matchPulseDurationToBeat = false;
-    [SerializeField] private float _pulseDuration = 1f;
+    [SerializeField] private double _pulseDuration = 1;
 
 
     private Vector3 _initialScale;
@@ -88,7 +88,7 @@ public class ScalePulse : MonoBehaviour
         {
             timer += Time.deltaTime;
             Vector3 scale = _initialScale;
-            float scaleModifier = 1 + _animationCurve.Evaluate(timer / _pulseDuration) * _scaleFactor;
+            float scaleModifier = 1 + _animationCurve.Evaluate(timer / (float)_pulseDuration) * _scaleFactor;
 
             if (_affectX)
             {
