@@ -1502,7 +1502,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: e24dac43c70c2ae4ebf2dcdd371fe729, type: 3}
   m_Resource: {fileID: 8300000, guid: e24dac43c70c2ae4ebf2dcdd371fe729, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.812
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1759,6 +1759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f78f3cebb0d50ad4dac0974a6ce3dfab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _tutorialMode: 0
   _breadWave:
   - Bread: {fileID: 11400000, guid: 3890ae2e7639cf040b3f81dadbd12b42, type: 2}
     BeatOffset: 0

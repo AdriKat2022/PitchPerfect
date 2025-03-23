@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 595abd89ccae58145b5815be085e59bd, type: 3}
+  m_Name: TutorialWave-Flips
+  m_EditorClassIdentifier: 
+  <Wave>k__BackingField:
+  - Bread: {fileID: 11400000, guid: 0394b9b6e9dbfe74683a3dd1e0ed90bf, type: 2}
+    BeatOffset: 0
+    NextBeatDelay: 2
+  - Bread: {fileID: 11400000, guid: 0394b9b6e9dbfe74683a3dd1e0ed90bf, type: 2}
+    BeatOffset: 0
+    NextBeatDelay: 2
+  - Bread: {fileID: 11400000, guid: 0394b9b6e9dbfe74683a3dd1e0ed90bf, type: 2}
+    BeatOffset: 0
+    NextBeatDelay: 2
+  <TutorialMode>k__BackingField: 1
+  <TutorialText>k__BackingField: Press [Space] to flip the bread
+  <TutorialTextSuccess>k__BackingField: 
+  <MinimumPitchsToProceed>k__BackingField: 0
+  <MinimumFlipsToProceed>k__BackingField: 5

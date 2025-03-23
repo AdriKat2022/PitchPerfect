@@ -6,5 +6,7 @@ public class BreadWave : ScriptableObject
     [field: SerializeField] public BreadData[] Wave { get; private set; }
     [field: SerializeField] public bool TutorialMode { get; private set; }
     [field: SerializeField] public string TutorialText { get; private set; }
-    [field: SerializeField] public int MinimumScoreToProceed { get; private set; }
+    [field: SerializeField] public string TutorialTextSuccess { get; private set; }
+    [field: SerializeField] public int MinimumPitchsToProceed { get; private set; }
+    [field: SerializeField] public int MinimumFlipsToProceed { get; private set; }
 }
