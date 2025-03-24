@@ -6,6 +6,12 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private InputActionReference _startAction;
     [SerializeField] private RhythmAction _rhythmAction;
+    [SerializeField] private int _nextScene = 1;
+
+    public void NextScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene(_nextScene);
+    }
 
     private IEnumerator Start()
     {

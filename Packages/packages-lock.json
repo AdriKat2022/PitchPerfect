@@ -1,5 +1,14 @@
 {
   "dependencies": {
+    "com.adrikat.toolkit": {
+      "version": "git+https://github.com/AdriKat2022/ToolkitUnityPackage.git#v1.4.1",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.4"
+      },
+      "hash": "5f5f61aec9983a4121de49a643aa6e8a68300c0f"
+    },
     "com.unity.2d.animation": {
       "version": "10.1.4",
       "depth": 1,
@@ -271,6 +280,14 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.textmeshpro": {
+      "version": "3.0.4",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.ugui": "2.0.0"
+      }
     },
     "com.unity.timeline": {
       "version": "1.8.7",
